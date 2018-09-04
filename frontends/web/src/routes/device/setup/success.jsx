@@ -32,7 +32,7 @@ export default class Success extends Component {
                             {t(`success.${goal}.info`)}
                         </div>
                         <hr />
-                        <Footer bottomSpace>
+                        <Footer>
                             <Shift />
                         </Footer>
                     </div>
