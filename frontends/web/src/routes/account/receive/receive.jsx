@@ -101,14 +101,16 @@ export default class Receive extends Component {
         }
     }
 
-    previous = () => {
+    previous = e => {
+        e.preventDefault();
         this.setState(({ activeIndex, receiveAddresses }) => ({
             activeIndex: (activeIndex + receiveAddresses.length - 1) % receiveAddresses.length,
             verified: false,
         }));
     };
 
-    next = () => {
+    next = e => {
+        e.preventDefault();
         this.setState(({ activeIndex, receiveAddresses }) => ({
             activeIndex: (activeIndex + 1) % receiveAddresses.length,
             verified: false,
@@ -171,46 +173,63 @@ export default class Receive extends Component {
         }
         const content = receiveAddresses ? (
             <div>
-                <div>
+                <div class={style.qrCodeContainer}>
                     <QRCode data={enableCopy ? uriPrefix + address : undefined} />
-                    <CopyableInput disabled={!enableCopy} value={address} />
-                    { forceVerification ? (
-                          verifying ? (
-                              <div>Please verify the address on your device</div>
-                          ) : (
-                              <Button
-                                  primary
-                                  disabled={verifying || secureOutput === undefined}
-                                  onClick={this.verifyAddress}>
-                                  Show and verify full address
-                              </Button>
-                          )
-                    ) : ''}
                 </div>
-                <div class={['flex flex-row flex-center flex-items-center', style.labels].join(' ')}>
+                <div class={['flex flex-row flex-between flex-items-center', style.labels].join(' ')}>
                     {
                         receiveAddresses.length > 1 && (
-                            <Button
-                                transparent
+                            <a
+                                href="!#"
+                                className={['flex flex-row flex-items-center', style.previous].join(' ')}
                                 disabled={verifying}
                                 onClick={this.previous}>
-                                <img src={ArrowLeft} class={style.arrowLeft} />
+                                <img src={ArrowLeft} />
                                 {t('button.previous')}
-                            </Button>
+                            </a>
                         )
                     }
                     <p class={style.label}>{t('receive.label')} { receiveAddresses.length > 1 ? `(${activeIndex + 1}/${receiveAddresses.length})` : ''}</p>
                     {
                         receiveAddresses.length > 1 && (
-                            <Button
-                                transparent
+                            <a
+                                href="!#"
+                                className={['flex flex-row flex-items-center', style.next].join(' ')}
                                 disabled={verifying}
-                                onClick={this.next}
-                                className={style.button}>
+                                onClick={this.next}>
                                 {t('button.next')}
-                                <img src={ArrowRight} class={style.arrowRight} />
-                            </Button>
+                                <img src={ArrowRight} />
+                            </a>
                         )
+                    }
+                </div>
+                <div>
+                    {
+                        forceVerification ? (
+                            <div style="position: relative;">
+                                <CopyableInput disabled={!enableCopy} value={address} />
+                                {
+                                    verifying ? (
+                                        <div className={style.verifyContent}>
+                                            <p>Please verify the address on your device</p>
+                                        </div>
+                                    ) : (
+                                        <div className={style.verifyContent}>
+                                            {
+                                                !enableCopy && (
+                                                    <Button
+                                                        primary
+                                                        disabled={verifying || secureOutput === undefined}
+                                                        onClick={this.verifyAddress}>
+                                                        Show and verify full address
+                                                    </Button>
+                                                )
+                                            }
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        ) : <CopyableInput disabled={!enableCopy} value={address} />
                     }
                 </div>
                 {
@@ -250,14 +269,15 @@ export default class Receive extends Component {
                                 href={`/account/${code}`}>
                                 {t('button.back')}
                             </ButtonLink>
-                            { !forceVerification ? (
-                                <Button
-                                    primary
-                                    disabled={verifying || secureOutput === undefined}
-                                    onClick={this.verifyAddress}>
-                                    {t('receive.verify')}
-                                </Button>
-                            ) : ''
+                            {
+                                !forceVerification ? (
+                                    <Button
+                                        primary
+                                        disabled={verifying || secureOutput === undefined}
+                                        onClick={this.verifyAddress}>
+                                        {t('receive.verify')}
+                                    </Button>
+                                ) : ''
                             }
                         </div>
                     </div>
