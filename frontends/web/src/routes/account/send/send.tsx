@@ -534,7 +534,9 @@ class Send extends Component<Props, State> {
                                     )
                                 }
                             </div>
-                            <Balance balance={balance} />
+                            <div className="box">
+                                <Balance balance={balance} />
+                            </div>
                             {
                                 coinControl && (
                                     <UTXOs
@@ -545,104 +547,108 @@ class Send extends Component<Props, State> {
                                     />
                                 )
                             }
-                            <div class={style.container}>
+                            <div className={style.container}>
                                 <label className="labelLarge">Transaction Details</label>
-                                <Input
-                                    label={t('send.address.label')}
-                                    placeholder={t('send.address.placeholder')}
-                                    id="recipientAddress"
-                                    error={addressError}
-                                    onInput={this.handleFormChange}
-                                    value={recipientAddress}
-                                    className={style.inputWithIcon}
-                                    autoFocus>
+                            </div>
+                            <div className="box">
+                                <div class="row">
+                                    <Input
+                                        label={t('send.address.label')}
+                                        placeholder={t('send.address.placeholder')}
+                                        id="recipientAddress"
+                                        error={addressError}
+                                        onInput={this.handleFormChange}
+                                        value={recipientAddress}
+                                        className={style.inputWithIcon}
+                                        autoFocus>
+                                        {
+                                            hasCamera && (
+                                                <button onClick={this.toggleScanQR} className={style.qrButton}>
+                                                    <img src={qrcodeIcon}/>
+                                                </button>
+                                            )
+                                        }
+                                    </Input>
                                     {
-                                        hasCamera && (
-                                            <button onClick={this.toggleScanQR} className={style.qrButton}>
-                                                <img src={qrcodeIcon}/>
-                                            </button>
+                                        debug && (
+                                            <span id="sendToSelf" className={style.action} onClick={this.sendToSelf}>
+                                                Send to self
+                                            </span>
                                         )
                                     }
-                                </Input>
-                                {
-                                    debug && (
-                                        <span id="sendToSelf" className={style.action} onClick={this.sendToSelf}>
-                                            Send to self
-                                        </span>
-                                    )
-                                }
-                            </div>
-                            <div class="row">
-                                <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
-                                    <Input
-                                        label={t('send.amount.label')}
-                                        id="amount"
-                                        onInput={this.handleFormChange}
-                                        disabled={sendAll}
-                                        error={amountError}
-                                        value={sendAll ? proposedAmount && proposedAmount.amount : amount}
-                                        placeholder={`${t('send.amount.placeholder')} ` + (balance && `(${balance.available.unit})`)} />
-                                    <Input
-                                        label={fiatUnit}
-                                        id="fiatAmount"
-                                        onInput={this.handleFiatInput}
-                                        disabled={sendAll}
-                                        error={amountError}
-                                        value={fiatAmount}
-                                        placeholder={`${t('send.amount.placeholder')} (${fiatUnit})`} />
                                 </div>
-                                <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
-                                    <Checkbox
-                                        label={t('send.maximum')}
-                                        id="sendAll"
-                                        onChange={this.sendAll}
-                                        checked={sendAll}
-                                        className={style.maxAmount} />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
-                                    <FeeTargets
-                                        // label={t('send.feeTarget.label')}
-                                        label="Priority"
-                                        placeholder={t('send.feeTarget.placeholder')}
-                                        accountCode={account.code}
-                                        disabled={!amount && !sendAll}
-                                        onFeeTargetChange={this.feeTargetChange} />
-                                    <Input
-                                        label={t('send.fee.label')}
-                                        id="proposedFee"
-                                        value={proposedFee && proposedFee.amount + ' ' + proposedFee.unit + (proposedFee.conversions ? ' = ' + proposedFee.conversions[fiatUnit] + ' ' + fiatUnit : '')}
-                                        placeholder={feeTarget === 'custom' ? t('send.fee.customPlaceholder') : t('send.fee.placeholder')}
-                                        disabled={feeTarget !== 'custom'}
-                                        transparent />
-                                    {/*
-                                    <Input
-                                        label={t('send.customFee.label')}
-                                        placeholder={t('send.customFee.placeholder')}
-                                        disabled
-                                    />
-                                    */}
-                                </div>
-                                {
-                                    feeTarget && (
-                                        <p class={style.feeDescription}>{t('send.feeTarget.description.' + feeTarget)}</p>
-                                    )
-                                }
-                            </div>
-                            {
-                                (account.coinCode === 'eth' || account.coinCode === 'teth' || account.coinCode === 'reth') && (
-                                    <div class="row">
+                                <div class="row">
+                                    <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
                                         <Input
-                                            label={t('send.data.label')}
-                                            placeholder={t('send.data.placeholder')}
-                                            id="data"
-                                            error={dataError}
+                                            label={t('send.amount.label')}
+                                            id="amount"
                                             onInput={this.handleFormChange}
-                                            value={data} />
+                                            disabled={sendAll}
+                                            error={amountError}
+                                            value={sendAll ? proposedAmount && proposedAmount.amount : amount}
+                                            placeholder={`${t('send.amount.placeholder')} ` + (balance && `(${balance.available.unit})`)} />
+                                        <Input
+                                            label={fiatUnit}
+                                            id="fiatAmount"
+                                            onInput={this.handleFiatInput}
+                                            disabled={sendAll}
+                                            error={amountError}
+                                            value={fiatAmount}
+                                            placeholder={`${t('send.amount.placeholder')} (${fiatUnit})`} />
                                     </div>
-                                )
-                            }
+                                    <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
+                                        <Checkbox
+                                            label={t('send.maximum')}
+                                            id="sendAll"
+                                            onChange={this.sendAll}
+                                            checked={sendAll}
+                                            className={style.maxAmount} />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
+                                        <FeeTargets
+                                            // label={t('send.feeTarget.label')}
+                                            label="Priority"
+                                            placeholder={t('send.feeTarget.placeholder')}
+                                            accountCode={account.code}
+                                            disabled={!amount && !sendAll}
+                                            onFeeTargetChange={this.feeTargetChange} />
+                                        <Input
+                                            label={t('send.fee.label')}
+                                            id="proposedFee"
+                                            value={proposedFee && proposedFee.amount + ' ' + proposedFee.unit + (proposedFee.conversions ? ' = ' + proposedFee.conversions[fiatUnit] + ' ' + fiatUnit : '')}
+                                            placeholder={feeTarget === 'custom' ? t('send.fee.customPlaceholder') : t('send.fee.placeholder')}
+                                            disabled={feeTarget !== 'custom'}
+                                            transparent />
+                                        {/*
+                                        <Input
+                                            label={t('send.customFee.label')}
+                                            placeholder={t('send.customFee.placeholder')}
+                                            disabled
+                                        />
+                                        */}
+                                    </div>
+                                    {
+                                        feeTarget && (
+                                            <p class={style.feeDescription}>{t('send.feeTarget.description.' + feeTarget)}</p>
+                                        )
+                                    }
+                                </div>
+                                {
+                                    (account.coinCode === 'eth' || account.coinCode === 'teth' || account.coinCode === 'reth') && (
+                                        <div class="row">
+                                            <Input
+                                                label={t('send.data.label')}
+                                                placeholder={t('send.data.placeholder')}
+                                                id="data"
+                                                error={dataError}
+                                                onInput={this.handleFormChange}
+                                                value={data} />
+                                        </div>
+                                    )
+                                }
+                            </div>
                             <div class="row buttons flex flex-row flex-between flex-start">
                                 <ButtonLink
                                     secondary

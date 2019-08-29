@@ -70,3 +70,7 @@ label,
 .label {
     user-select: none;
 }
+
+svg {
+    /* stroke-width: 1.5 !important; */
+}

@@ -92,7 +92,7 @@ class Settings extends Component<Props, State> {
                                         <h3>{t('deviceSettings.secrets.title')}</h3>
                                     </div>
                                 </div>
-                                <div className="items">
+                                <div className="items box">
                                     <ButtonLink primary href={`/manage-backups/${deviceID}/${sdCardInserted}`}>
                                         {t('deviceSettings.secrets.manageBackups')}
                                     </ButtonLink>
@@ -105,7 +105,7 @@ class Settings extends Component<Props, State> {
                                         <h3>{t('deviceSettings.firmware.title')}</h3>
                                     </div>
                                 </div>
-                                <dl class="items marginBottom">
+                                <dl class="items box marginBottom">
                                     <div>
                                         <dt>{t('deviceSettings.firmware.version.label')}</dt>
                                         <dd>{versionInfo ? versionInfo.currentVersion : t('loading')}</dd>
@@ -140,7 +140,7 @@ class Settings extends Component<Props, State> {
                                         <h3>{t('deviceSettings.hardware.title')}</h3>
                                     </div>
                                 </div>
-                                <div className="items">
+                                <div className="items box">
                                     <SetDeviceName
                                         apiPrefix={this.apiPrefix()}
                                         getInfo={this.getInfo} />
@@ -152,7 +152,7 @@ class Settings extends Component<Props, State> {
                                         <h3>{t('settings.expert.title')}</h3>
                                     </div>
                                 </div>
-                                <div className="items">
+                                <div className="items box">
                                     <MnemonicPassphraseButton
                                         apiPrefix={this.apiPrefix()}
                                         mnemonicPassphraseEnabled={deviceInfo.mnemonicPassphraseEnabled}

@@ -6,7 +6,7 @@
 
 .input label {
     display: block;
-    margin-bottom: var(--space-quarter);
+    margin: var(--space-quarter) 0;
 }
 
 .input input {
@@ -21,12 +21,13 @@
     height: 52px;
     padding: 0 var(--space-half);
     width: 100%;
-    transition: outline-color .2s ease-out, border-color .2s ease-out;
-    will-change: outline-color, border-color;
+    transition: border-color .2s ease-out;
+    will-change: border-color;
 }
 
 .input input:focus {
-    outline: solid 1px var(--color-blue);
+    border-color: var(--color-blue);
+    outline: none;
 }
 
 .input input[disabled] {
@@ -39,7 +40,6 @@
 .isTransparent input[disabled] {
     border: none;
     color: var(--color-default) !important;
-    /* padding: var(--spacing-half) 0; */
     cursor: default;
 }
 

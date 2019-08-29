@@ -19,6 +19,8 @@
     --color-yellow: #fef160;
     --color-blue: #5E94BF;
     --color-lightblue: #7faacc;
+    --color-orange: #FFB761;
+    --color-lightorange: #ffc580;
 
     /* font colors */
     --color-default: var(--color-softblack);
