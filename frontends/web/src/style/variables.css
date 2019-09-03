@@ -40,7 +40,7 @@
     --color-focus: rgb(59, 153, 252);
 
     /* background colors */
-    --background: var(--color-lightgray);
+    --background: #F5F5F5;
     --background-hover: var(--background);
     --background-active: var(--color-white);
     --background-sidebar: var(--color-lightgray);
@@ -88,6 +88,7 @@
 
     /* content */
     --content-width: 1004px;
+    --content-width-small: 540px;
 
     /* guide */
     --guide-width: 350px;

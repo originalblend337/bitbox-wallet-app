@@ -302,7 +302,7 @@ class Account extends Component<Props, State> {
                                     </a>
                                 </div>
                             </div>
-                            <div className="box">
+                            <div className="box large">
                                 <Balance balance={balance} />
                             </div>
                             {
