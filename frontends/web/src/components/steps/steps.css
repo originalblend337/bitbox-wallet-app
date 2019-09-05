@@ -344,6 +344,7 @@
 
 .fullWidth > * {
     width: 100%;
+    min-width: 340px !important;
 }
 
 .wizardLabel label {

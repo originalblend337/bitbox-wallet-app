@@ -71,7 +71,7 @@ class Step extends Component<StepProps, State> {
                     visible ? '' : style.hide,
                     large ? style.large : '',
                 ].join(' ')}
-                style={width ? `max-width: ${width}px` : ''}
+                style={width ? `max-width: ${width}px; width: ${width}px;` : ''}
                 ref={this.setRef}>
                 {/* <div className={style.stepNumber}>
                     {
