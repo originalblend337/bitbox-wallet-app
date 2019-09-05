@@ -9,6 +9,7 @@ interface StepProps {
   activeStep?: number;
   empty?: boolean;
   large?: boolean;
+  width?: number;
 }
 
 interface State {
@@ -58,7 +59,7 @@ class Step extends Component<StepProps, State> {
     }
 
     public render(
-        { active, empty, title, large, children }: RenderableProps<StepProps>,
+        { active, empty, title, large, width, children }: RenderableProps<StepProps>,
         { isComplete, visible }: State,
     ) {
         return (
@@ -70,6 +71,7 @@ class Step extends Component<StepProps, State> {
                     visible ? '' : style.hide,
                     large ? style.large : '',
                 ].join(' ')}
+                style={width ? `max-width: ${width}px` : ''}
                 ref={this.setRef}>
                 {/* <div className={style.stepNumber}>
                     {
