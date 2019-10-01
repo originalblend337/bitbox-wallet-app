@@ -454,7 +454,8 @@ func (base *BitBoxBase) EnableTor(toggleAction rpcmessages.ToggleSetting) error 
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s Tor' call", toggleAction)
+	base.log.Printf("bitboxbase is making a 'set EnableTor: %v' call", toggleAction)
+
 	reply, err := base.rpcClient.EnableTor(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
@@ -471,7 +472,8 @@ func (base *BitBoxBase) EnableTorMiddleware(toggleAction rpcmessages.ToggleSetti
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s Tor for middleware' call", toggleAction)
+
+	base.log.Printf("bitboxbase is making a 'set EnableTorMiddleware: %v' call", toggleAction)
 	reply, err := base.rpcClient.EnableTorMiddleware(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
@@ -488,7 +490,8 @@ func (base *BitBoxBase) EnableTorElectrs(toggleAction rpcmessages.ToggleSetting)
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s Tor for electrs' call", toggleAction)
+
+	base.log.Printf("bitboxbase is making a 'set EnableTorElectrs: %v' call", toggleAction)
 	reply, err := base.rpcClient.EnableTorElectrs(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
@@ -505,7 +508,8 @@ func (base *BitBoxBase) EnableTorSSH(toggleAction rpcmessages.ToggleSetting) err
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s Tor for SSH' call", toggleAction)
+
+	base.log.Printf("bitboxbase is making a 'set EnableTorSSH for SSH: %v' call", toggleAction)
 	reply, err := base.rpcClient.EnableTorSSH(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
@@ -522,7 +526,8 @@ func (base *BitBoxBase) EnableClearnetIBD(toggleAction rpcmessages.ToggleSetting
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s clearnet IBD' call", toggleAction)
+
+	base.log.Printf("bitboxbase is making a 'set EnableClearnetIBD: %v' call", toggleAction)
 	reply, err := base.rpcClient.EnableClearnetIBD(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
@@ -539,7 +544,8 @@ func (base *BitBoxBase) EnableRootLogin(toggleAction rpcmessages.ToggleSetting) 
 	if !base.active {
 		return errp.New("Attempted a call to non-active base")
 	}
-	base.log.Printf("bitboxbase is making a '%s root login' call", toggleAction)
+
+	base.log.Printf("bitboxbase is making a 'set EnableRootLogin: %v' call", toggleAction)
 	reply, err := base.rpcClient.EnableRootLogin(toggleAction)
 	if err != nil {
 		base.log.WithError(err)
