@@ -57,6 +57,19 @@ enum ActiveStep {
     Ready,
 }
 
+// SyncingOptions correspond to API endpoints in the handlers
+enum SyncingOptions {
+    Resync = 'resync-bitcoin',
+    Reindex = 'reindex-bitcoin',
+    Presync = 'presync', // the Base starts presynced by default so this is not an API call
+}
+
+// NetworkOptions correspond to API endpoints in the handlers
+enum NetworkOptions {
+    EnableTor = 'enable-tor',
+    ClearnetIBD = 'enable-clearnet-ibd',
+}
+
 interface State {
     middlewareInfo?: MiddlewareInfoType;
     verificationProgress?: VerificationProgressType;
@@ -70,10 +83,11 @@ interface State {
     'initialized';
     hash?: string;
     showWizard: boolean;
-    activeStep?: number;
+    activeStep?: ActiveStep;
     password?: string;
     hostname?: string;
     validHostname?: boolean;
+    syncingOption?: SyncingOptions;
 }
 
 type Props = BitBoxBaseProps & TranslateProps;
@@ -94,6 +108,7 @@ class BitBoxBase extends Component<Props, State> {
             password: undefined,
             hostname: undefined,
             validHostname: false,
+            syncingOption: undefined,
         };
     }
 
@@ -206,7 +221,7 @@ class BitBoxBase extends Component<Props, State> {
 
     private submitChangePassword = event => {
         event.preventDefault();
-        apiPost(this.apiPrefix() + '/userchangepassword', {username: 'admin', newPassword: this.state.password})
+        apiPost(this.apiPrefix() + '/user-changepassword', {username: 'admin', newPassword: this.state.password})
         .then(response => {
             if (response.success) {
                 this.setState({ activeStep: ActiveStep.ChooseSetup });
@@ -228,7 +243,7 @@ class BitBoxBase extends Component<Props, State> {
     }
 
     private setHostname = () => {
-        apiPost(this.apiPrefix() + '/sethostname', {hostname: this.state.hostname})
+        apiPost(this.apiPrefix() + '/set-hostname', {hostname: this.state.hostname})
         .then(response => {
             if (response.success) {
                 this.setState({ activeStep: ActiveStep.ChooseSyncingOption });
@@ -238,27 +253,50 @@ class BitBoxBase extends Component<Props, State> {
         });
     }
 
+    private setNetwork = (networkOption: NetworkOptions, toggleSetting: boolean) => {
+        apiPost(this.apiPrefix() + `/${networkOption}`, toggleSetting)
+        .then(response => {
+            if (response.success) {
+                if (this.state.syncingOption === SyncingOptions.Presync) {
+                    this.setState({ activeStep: ActiveStep.Backup });
+                } else {
+                    this.setSyncingOption();
+                }
+            } else {
+                alertUser(response.message);
+            }
+        });
+    }
+
+    private setSyncingOption = () => {
+        if (this.state.syncingOption) {
+            apiPost(this.apiPrefix() + `/${this.state.syncingOption}`)
+            .then(response => {
+                if (response.success) {
+                    this.setState({ activeStep: ActiveStep.Backup });
+                } else {
+                    alertUser(response.message);
+                }
+            });
+        } else {
+            alertUser('No network setting found');
+        }
+    }
+
+    private createBackup = () => {
+        apiPost(this.apiPrefix() + '/backup-sysconfig')
+        .then(response => {
+            if (response.success) {
+                this.setState({ activeStep: ActiveStep.BackupCreated });
+            } else {
+                alertUser(response.message);
+            }
+        });
+    }
+
     private onDisconnect = () => {
         route('/bitboxbase', true);
     }
-
-    // private resync = () => {
-    //     apiPost(this.apiPrefix() + '/resyncbitcoin')
-    //     .then(reply => {
-    //         if (!reply.success) {
-    //             alertUser('Failed to execute bitcoin resync');
-    //         }
-    //     });
-    // }
-
-    // private reindex = () => {
-    //     apiPost(this.apiPrefix() + '/reindexbitcoin')
-    //     .then(reply => {
-    //         if (!reply.success) {
-    //             alertUser('Failed to execute bitcoin reindex');
-    //         }
-    //     });
-    // }
 
     public render(
         {
@@ -406,34 +444,36 @@ class BitBoxBase extends Component<Props, State> {
                                 <Step title="Choose Syncing Option" active={activeStep === ActiveStep.ChooseSyncingOption} width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
-                                            <Button primary onClick={() => this.setState({ activeStep: ActiveStep.ChooseNetwork })}>Start from pre-synced blockchain</Button>
+                                            <Button primary onClick={() => this.setState({ syncingOption: SyncingOptions.Presync, activeStep: ActiveStep.ChooseNetwork })}>
+                                                Start from pre-synced blockchain
+                                            </Button>
                                             <Button primary onClick={() => {
                                                 confirmation('This process takes approximately 1 day. Are you sure you want to continue?', result => {
                                                     if (result) {
-                                                        // TODO: Keep track of selected option to call after user selects network
-                                                        this.setState({ activeStep: ActiveStep.ChooseNetwork });
+                                                        this.setState({ syncingOption: SyncingOptions.Reindex, activeStep: ActiveStep.ChooseNetwork });
                                                     }
                                                 });
-                                            }}>Validate from genesis block</Button>
+                                            }}>
+                                                Validate from genesis block
+                                            </Button>
                                             <Button primary onClick={() => {
                                                 confirmation('This process takes approximately 1 ~ 2 days depending on your internet connection. Are you sure you want to continue?', result => {
                                                     if (result) {
-                                                        this.setState({ activeStep: ActiveStep.ChooseIBDNetwork });
+                                                        this.setState({ syncingOption: SyncingOptions.Resync, activeStep: ActiveStep.ChooseIBDNetwork });
                                                     }
                                                 });
-                                            }}>Sync from scratch</Button>
+                                            }}>
+                                                Sync from scratch
+                                            </Button>
                                         </div>
                                     </div>
                                 </Step>
 
-                                {/* TODO: Implement Tor/Clearnet RPC calls in backend so they can be called here
-                                in Choose Network Option Steps */}
-
                                 <Step title="Choose Network Option" active={activeStep === ActiveStep.ChooseNetwork} width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
-                                            <Button primary onClick={() => this.setState({ activeStep: ActiveStep.Backup })}>Tor Only</Button>
-                                            <Button secondary onClick={() => this.setState({ activeStep: ActiveStep.Backup })}>Clearnet Only</Button>
+                                            <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, true)}>Tor Only</Button>
+                                            <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, false)}>Clearnet Only</Button>
                                         </div>
                                     </div>
                                 </Step>
@@ -441,9 +481,9 @@ class BitBoxBase extends Component<Props, State> {
                                 <Step title="Choose Network Option" active={activeStep === ActiveStep.ChooseIBDNetwork} width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
-                                            <Button primary onClick={() => this.setState({ activeStep: ActiveStep.Backup })}>Tor Only</Button>
-                                            <Button secondary onClick={() => this.setState({ activeStep: ActiveStep.Backup })}>Clearnet Only</Button>
-                                            <Button secondary onClick={() => this.setState({ activeStep: ActiveStep.Backup })}>Clearnet Only for Initial Block Download</Button>
+                                            <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, true)}>Tor Only</Button>
+                                            <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, false)}>Clearnet Only</Button>
+                                            <Button primary onClick={() => this.setNetwork(NetworkOptions.ClearnetIBD, true)}>Clearnet Only for Initial Block Download</Button>
                                         </div>
                                     </div>
                                 </Step>
@@ -454,7 +494,9 @@ class BitBoxBase extends Component<Props, State> {
                                     <div className={stepStyle.stepContext}>
                                         <p>Insert USB memory stick into the BitBox Base to make a backup of your wallet.</p>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
-                                            <Button primary onClick={() => this.setState({ activeStep: ActiveStep.BackupCreated })}>Continue</Button>
+                                            <Button primary onClick={() => this.createBackup()}>
+                                                Create Backup
+                                            </Button>
                                         </div>
                                     </div>
                                 </Step>

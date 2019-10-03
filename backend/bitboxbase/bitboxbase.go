@@ -301,7 +301,6 @@ func (base *BitBoxBase) ReindexBitcoin() error {
 	}
 	base.log.Println("bitboxbase is making a ReindexBitcoin call")
 	reply, err := base.rpcClient.ReindexBitcoin()
-	base.changeStatus(bitboxbasestatus.StatusInitialized)
 	if err != nil {
 		base.log.WithError(err)
 		// if the rpc client throws an error we don't want to pass that on to the frontend, because its probably junk
@@ -320,7 +319,6 @@ func (base *BitBoxBase) ResyncBitcoin() error {
 	}
 	base.log.Println("bitboxbase is making a ResyncBitcoin call")
 	reply, err := base.rpcClient.ResyncBitcoin()
-	base.changeStatus(bitboxbasestatus.StatusInitialized)
 	if err != nil {
 		base.log.WithError(err)
 		// if the rpc client throws an error we don't want to pass that on to the frontend, because its probably junk
@@ -414,6 +412,7 @@ func (base *BitBoxBase) BackupHSMSecret() error {
 	if !reply.Success {
 		return &reply
 	}
+	base.changeStatus(bitboxbasestatus.StatusInitialized)
 	return nil
 }
 
