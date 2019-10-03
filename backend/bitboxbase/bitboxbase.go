@@ -396,6 +396,7 @@ func (base *BitBoxBase) BackupSysconfig() error {
 	if !reply.Success {
 		return &reply
 	}
+	base.changeStatus(bitboxbasestatus.StatusInitialized)
 	return nil
 }
 
@@ -412,7 +413,6 @@ func (base *BitBoxBase) BackupHSMSecret() error {
 	if !reply.Success {
 		return &reply
 	}
-	base.changeStatus(bitboxbasestatus.StatusInitialized)
 	return nil
 }
 
