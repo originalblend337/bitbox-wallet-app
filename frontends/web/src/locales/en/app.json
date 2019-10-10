@@ -195,8 +195,11 @@
   },
   "bitboxBase": {
     "connect": "Connect Base",
-    "detectedBases": "Detected the following devices on your network:",
-    "manualInput": "Can't see your BitBox Base? Connect manually below:",
+    "detectedBases": "Detected Devices on Your Network",
+    "detectedBasesEmpty": "No devices found",
+    "connectedBases": "Connected Devices",
+    "manualInput": "Connect manually",
+    "manualInputLabel": "IP address:port",
     "title": "BitBox Base"
   },
   "bitboxBaseWizard": {

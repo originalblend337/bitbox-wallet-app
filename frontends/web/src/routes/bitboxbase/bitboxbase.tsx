@@ -23,11 +23,11 @@ import { Header } from '../../components/layout/header';
 import { PasswordRepeatInput } from '../../components/password';
 import { Step, Steps } from '../../components/steps';
 import * as stepStyle from '../../components/steps/steps.css';
+import WaitDialog from '../../components/wait-dialog/wait-dialog';
 import { translate, TranslateProps } from '../../decorators/translate';
 import '../../style/animate.css';
 import { apiSubscribe } from '../../utils/event';
 import { apiGet, apiPost } from '../../utils/request';
-import WaitDialog from '../../components/wait-dialog/wait-dialog';
 
 export interface BitBoxBaseProps {
     bitboxBaseID: string | null;
@@ -363,6 +363,7 @@ class BitBoxBase extends Component<Props, State> {
                 </div>
             );
         }
+
         return (
             <div className="contentWithGuide">
                 <div className="container">
@@ -377,17 +378,23 @@ class BitBoxBase extends Component<Props, State> {
                     }
 
                     <div class="innerContainer scrollableContainer">
-                        <div class="content padded">
+                        <div class="content padded isVerticallyCentered">
                             <Steps>
 
-                                <Step title="Verify Pairing Code" active={activeStep === ActiveStep.PairingCode} width={540}>
+                                <Step
+                                    title="Verify Pairing Code"
+                                    active={activeStep === ActiveStep.PairingCode}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <p>{t('bitboxBaseWizard.pairing.unpaired')}</p>
                                         <pre>{hash}</pre>
                                     </div>
                                 </Step>
 
-                                <Step title="Set a Password" active={activeStep === ActiveStep.SetPassword} width={540}>
+                                <Step
+                                    title="Set a Password"
+                                    active={activeStep === ActiveStep.SetPassword}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <form onSubmit={this.submitChangePassword}>
                                             <PasswordRepeatInput
@@ -407,7 +414,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Choose Setup" active={activeStep === ActiveStep.ChooseSetup} large>
+                                <Step
+                                    title="Choose Setup"
+                                    active={activeStep === ActiveStep.ChooseSetup}
+                                    large>
                                     <div className="columnsContainer half">
                                         <div className="columns">
                                             <div className="column column-1-2">
@@ -442,7 +452,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Choose a Name" active={activeStep === ActiveStep.ChooseName} width={540}>
+                                <Step
+                                    title="Choose a Name"
+                                    active={activeStep === ActiveStep.ChooseName}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <Input
                                             className={stepStyle.wizardLabel}
@@ -464,7 +477,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Choose Syncing Option" active={activeStep === ActiveStep.ChooseSyncingOption} width={540}>
+                                <Step
+                                    title="Choose Syncing Option"
+                                    active={activeStep === ActiveStep.ChooseSyncingOption}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
                                             <Button primary onClick={() => this.setState({ syncingOption: SyncingOptions.Presync, activeStep: ActiveStep.ChooseNetwork })}>
@@ -492,7 +508,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Choose Network Option" active={activeStep === ActiveStep.ChooseNetwork} width={540}>
+                                <Step
+                                    title="Choose Network Option"
+                                    active={activeStep === ActiveStep.ChooseNetwork}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
                                             <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, true)}>Tor Only</Button>
@@ -501,7 +520,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Choose Network Option" active={activeStep === ActiveStep.ChooseIBDNetwork} width={540}>
+                                <Step
+                                    title="Choose Network Option"
+                                    active={activeStep === ActiveStep.ChooseIBDNetwork}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
                                             <Button primary onClick={() => this.setNetwork(NetworkOptions.EnableTor, true)}>Tor Only</Button>
@@ -513,7 +535,10 @@ class BitBoxBase extends Component<Props, State> {
 
                                 {/* TODO: Add API calls for backup options  */}
 
-                                <Step title="Wallet Backup" active={activeStep === ActiveStep.Backup} width={540}>
+                                <Step
+                                    title="Wallet Backup"
+                                    active={activeStep === ActiveStep.Backup}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <p>Insert USB memory stick into the BitBox Base to make a backup of your wallet.</p>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
@@ -524,7 +549,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="Wallet Backup Created" active={activeStep === ActiveStep.BackupCreated} width={540}>
+                                <Step
+                                    title="Wallet Backup Created"
+                                    active={activeStep === ActiveStep.BackupCreated}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <p>You may now remove the memory stick and store it in a secure location.</p>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
@@ -533,7 +561,10 @@ class BitBoxBase extends Component<Props, State> {
                                     </div>
                                 </Step>
 
-                                <Step title="You're Ready To Go!" active={activeStep === ActiveStep.Ready} width={540}>
+                                <Step
+                                    title="You're Ready To Go!"
+                                    active={activeStep === ActiveStep.Ready}
+                                    width={540}>
                                     <div className={stepStyle.stepContext}>
                                         <div className={['buttons text-center', stepStyle.fullWidth].join(' ')} style="margin-top: 0 !important;">
                                             <Button primary onClick={() => this.setState({ showWizard: false, activeStep: ActiveStep.PairingCode })}>Go to Dashboard</Button>

@@ -283,7 +283,7 @@
 }
 
 .stepContext ul, ol {
-    padding-left: var(--space-half);
+    padding-left: calc(var(--space-half) + 2px);
 }
 
 .stepContext ul li,

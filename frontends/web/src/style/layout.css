@@ -319,6 +319,7 @@
 .m-bottom-quarter { margin-bottom: var(--space-quarter) !important; }
 .m-bottom-half { margin-bottom: var(--space-half) !important; }
 .m-bottom-default { margin-bottom: var(--space-default) !important; }
+.m-bottom-large { margin-bottom: calc(var(--space-half) * 1.5) !important; }
 .m-left-quarter { margin-left: var(--space-quarter) !important; }
 .m-left-half { margin-left: var(--space-half) !important; }
 .m-left-default { margin-left: var(--space-default) !important; }
