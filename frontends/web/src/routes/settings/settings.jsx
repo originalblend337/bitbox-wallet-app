@@ -19,6 +19,7 @@ import { translate } from 'react-i18next';
 import { apiGet, apiPost } from '../../utils/request';
 import { setConfig } from '../../utils/config';
 import { Badge } from '../../components/badge/badge';
+import { debug } from '../../utils/env';
 import { Dialog } from '../../components/dialog/dialog';
 import { Button, Input } from '../../components/forms';
 import { Guide } from '../../components/guide/guide';
@@ -329,6 +330,9 @@ export default class Settings extends Component {
                                                             )
                                                         }
                                                         <SettingsButton link href="/settings/electrum">{t('settings.expert.electrum.title')}</SettingsButton>
+                                                        {
+                                                            debug && <SettingsButton link href="/bitboxbase">{t('settings.expert.base')}</SettingsButton>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
