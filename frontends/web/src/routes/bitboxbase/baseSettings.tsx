@@ -30,11 +30,18 @@ interface SettingsProps {
     connectElectrum: () => void;
 }
 
+interface State {
+    expandedDashboard: boolean;
+}
+
 type Props = SettingsProps & TranslateProps;
 
-class BaseSettings extends Component<Props> {
+class BaseSettings extends Component<Props, State> {
     constructor(props) {
         super(props);
+        this.state = {
+            expandedDashboard: false,
+        };
     }
 
     public render(
@@ -46,17 +53,95 @@ class BaseSettings extends Component<Props> {
             disconnect,
             connectElectrum,
         }: RenderableProps<Props>,
+        {
+            expandedDashboard,
+        }: State,
     ) {
         return (
             <div className="contentWithGuide">
                 <div className="container">
                     <Header title={<h2>{t('bitboxBase.settings.title')}</h2>} />
                     <div className="innerContainer scrollableContainer">
-                        <div className="content padded">
-                            <div className={style.dashboard}>
-
+                        <div className={style.dashboardContainer}>
+                            <div className={[style.dashboard, expandedDashboard ? style.expanded : ''].join(' ')}>
+                                <div className={style.nameStatus}>
+                                    <p>My BitBoxBase:</p>
+                                    <p><span className={[style.statusBadge, style.online].join(' ')}></span>Online</p>
+                                </div>
+                                <div className={style.items}>
+                                    <div className={style.item}>
+                                        <div className={style.dashboardItem}>
+                                            <p>85%</p>
+                                            <p>Sync status</p>
+                                        </div>
+                                    </div>
+                                    <div className={style.item}>
+                                        <div className={style.dashboardItem}>
+                                            <p>14</p>
+                                            <p>Connected peers</p>
+                                        </div>
+                                    </div>
+                                    <div className={style.item}>
+                                        <div className={style.dashboardItem}>
+                                            <p>8</p>
+                                            <p>Lightning channels</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={style.expandedItemsContainer}>
+                                    <div className="columnsContainer">
+                                        <div className="columns">
+                                            <div className="column column-1-3">
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="192.168.1.1:8845">IP address[:port]</SettingsItem>
+                                                </div>
+                                                <div className="box slim divide m-top-default">
+                                                    <SettingsItem optionalText="192.168.1.1">Tor Onion address</SettingsItem>
+                                                    <SettingsItem optionalText="8845">Tor port</SettingsItem>
+                                                </div>
+                                            </div>
+                                            <div className="column column-1-3">
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="0.5.1">Bitcoind version</SettingsItem>
+                                                    <SettingsItem optionalText="Listening">Bitcoind listening</SettingsItem>
+                                                    <SettingsItem optionalText="550,000">Bitcoind blocks</SettingsItem>
+                                                    <SettingsItem optionalText="0">Bitcoind headers</SettingsItem>
+                                                </div>
+                                            </div>
+                                            <div className="column column-1-3">
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="0.5.1">Lightningd version</SettingsItem>
+                                                    <SettingsItem optionalText="22,500">Lightningd blocks</SettingsItem>
+                                                </div>
+                                                <div className="box slim divide m-top-default">
+                                                    <SettingsItem optionalText="1.2">Electrs version</SettingsItem>
+                                                    <SettingsItem optionalText="999,999">Electrs blocks</SettingsItem>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="columnsContainer m-top-default-extra">
+                            <button className={style.expandButton} onClick={() => this.setState({ expandedDashboard: !expandedDashboard })}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    {
+                                        expandedDashboard ? (
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        ) : (
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        )
+                                    }
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="content padded">
+                            <div className="columnsContainer m-top-half">
                                 <div className="columns">
                                     <div className="column column-1-3">
                                         <div class="subHeaderContainer">
@@ -65,7 +150,7 @@ class BaseSettings extends Component<Props> {
                                             </div>
                                         </div>
                                         <div className="box slim divide">
-                                            <SettingsButton optionalText="My BitBoxBase">{t('bitboxBase.settings.basics.name')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.basics.name')}</SettingsButton>
                                             <SettingsButton>{t('bitboxBase.settings.basics.password')}</SettingsButton>
                                             <SettingsButton>{t('bitboxBase.settings.basics.info')}</SettingsButton>
                                         </div>

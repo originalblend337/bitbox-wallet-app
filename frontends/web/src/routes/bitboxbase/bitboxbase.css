@@ -1,4 +1,112 @@
+.dashboardContainer {
+    background-image: linear-gradient(var(--color-lightblue), var(--color-blue));
+    margin-top: 1px;
+    position: relative;
+}
+
 .dashboard {
-  min-height: 240px;
-  background-color: var(--color-white);
+    width: 100%;
+    max-width: var(--content-width);
+    min-height: 278px;
+    height: 278px;
+    transition: height ease-in-out 0.3s;
+    margin: 0 auto;
+    padding: 0 var(--space-default);
+    overflow: hidden;
+}
+
+.expanded {
+    height: 576px;
+}
+
+.expandButton {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: solid 1px var(--color-mediumgray);
+    color: var(--color-gray);
+    padding: 0;
+}
+
+.expandButton svg {
+    width: 18px;
+    height: 18px;
+}
+
+.expandButton:focus {
+    outline: none;
+}
+
+.nameStatus {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: var(--item-height);
+    background-color: var(--color-white);
+    margin-top: var(--space-default);
+    padding: 0 var(--space-half);
+}
+
+.nameStatus p:first-child {
+    margin-right: var(--space-quarter);
+}
+
+.statusBadge {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.statusBadge.online {
+    background-color: var(--color-orange);
+}
+
+.items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: var(--space-default);
+}
+
+.item {
+    width: calc((100% - (var(--space-default) * 2)) / 3);
+    background-color: var(--color-white);
+}
+
+.dashboardItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(var(--item-height) * 2.5);
+}
+
+.dashboardItem p:first-child {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1;
+    margin: 0;
+}
+
+.dashboardItem p:last-child {
+    margin-top: var(--space-quarter);
+    margin-bottom: 0;
+    color: var(--color-gray);
+}
+
+.expandedItemsContainer {
+    margin-top: var(--space-default);
+    transform: translateY(20%);
+    transition: transform ease-out 0.3s;
+}
+
+.expanded .expandedItemsContainer {
+    transform: translateY(0%);
 }
