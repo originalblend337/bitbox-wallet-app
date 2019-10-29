@@ -47,7 +47,6 @@ class BaseSettings extends Component<Props, State> {
     public render(
         {
             t,
-            baseID,
             // middlewareInfo,
             // verificationProgress,
             disconnect,
@@ -92,36 +91,56 @@ class BaseSettings extends Component<Props, State> {
                                     <div className="columnsContainer">
                                         <div className="columns">
                                             <div className="column column-1-3">
-                                                <div className="box slim divide">
-                                                    <SettingsItem optionalText="192.168.1.1:8845">IP address[:port]</SettingsItem>
+                                                <div className="subHeaderContainer">
+                                                    <div className="subHeader">
+                                                        <h3>{t('bitboxBase.settings.advanced.subheaders.networking')}</h3>
+                                                    </div>
                                                 </div>
-                                                <div className="box slim divide m-top-default">
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="192.168.1.1">{t('bitboxBase.settings.advanced.ipAddress')}</SettingsItem>
+                                                    <SettingsItem optionalText="8845">{t('bitboxBase.settings.advanced.port')}</SettingsItem>
                                                     <SettingsItem optionalText="192.168.1.1">Tor Onion address</SettingsItem>
                                                     <SettingsItem optionalText="8845">Tor port</SettingsItem>
                                                 </div>
                                             </div>
                                             <div className="column column-1-3">
+                                                <div className="subHeaderContainer">
+                                                    <div className="subHeader">
+                                                        <h3>{t('bitboxBase.settings.advanced.subheaders.bitcoin')}</h3>
+                                                    </div>
+                                                </div>
                                                 <div className="box slim divide">
-                                                    <SettingsItem optionalText="0.5.1">Bitcoind version</SettingsItem>
-                                                    <SettingsItem optionalText="Listening">Bitcoind listening</SettingsItem>
-                                                    <SettingsItem optionalText="550,000">Bitcoind blocks</SettingsItem>
-                                                    <SettingsItem optionalText="0">Bitcoind headers</SettingsItem>
+                                                    <SettingsItem optionalText="0.5.1">Version</SettingsItem>
+                                                    <SettingsItem optionalText="Listening">Status</SettingsItem>
+                                                    <SettingsItem optionalText="550,000">Blocks</SettingsItem>
+                                                    <SettingsItem optionalText="0">Headers</SettingsItem>
                                                 </div>
                                             </div>
                                             <div className="column column-1-3">
-                                                <div className="box slim divide">
-                                                    <SettingsItem optionalText="0.5.1">Lightningd version</SettingsItem>
-                                                    <SettingsItem optionalText="22,500">Lightningd blocks</SettingsItem>
+                                                <div className="subHeaderContainer">
+                                                    <div className="subHeader">
+                                                        <h3>{t('bitboxBase.settings.advanced.subheaders.lightning')}</h3>
+                                                    </div>
                                                 </div>
-                                                <div className="box slim divide m-top-default">
-                                                    <SettingsItem optionalText="1.2">Electrs version</SettingsItem>
-                                                    <SettingsItem optionalText="999,999">Electrs blocks</SettingsItem>
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="0.5.1">Version</SettingsItem>
+                                                    <SettingsItem optionalText="22,500">Blocks</SettingsItem>
+                                                </div>
+                                                <div className={['subHeaderContainer', style.lastSubheader].join(' ')}>
+                                                    <div className="subHeader">
+                                                        <h3>{t('bitboxBase.settings.advanced.subheaders.electrs')}</h3>
+                                                    </div>
+                                                </div>
+                                                <div className="box slim divide">
+                                                    <SettingsItem optionalText="1.2">Version</SettingsItem>
+                                                    <SettingsItem optionalText="999,999">Blocks</SettingsItem>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <hr style="margin: 0px;"/>
                             <button className={style.expandButton} onClick={() => this.setState({ expandedDashboard: !expandedDashboard })}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -146,13 +165,26 @@ class BaseSettings extends Component<Props, State> {
                                     <div className="column column-1-3">
                                         <div class="subHeaderContainer">
                                             <div class="subHeader">
-                                                <h3>{t('bitboxBase.settings.basics.title')}</h3>
+                                                <h3>{t('bitboxBase.settings.node.title')}</h3>
                                             </div>
                                         </div>
                                         <div className="box slim divide">
-                                            <SettingsButton>{t('bitboxBase.settings.basics.name')}</SettingsButton>
-                                            <SettingsButton>{t('bitboxBase.settings.basics.password')}</SettingsButton>
-                                            <SettingsButton>{t('bitboxBase.settings.basics.info')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.node.changeName')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.node.password')}</SettingsButton>
+                                            <SettingsButton optionalText="Enabled">{t('bitboxBase.settings.node.tor')}</SettingsButton>
+                                            <SettingsButton danger onClick={disconnect}>{t('bitboxBase.settings.node.disconnect')}</SettingsButton>
+                                        </div>
+                                    </div>
+                                    <div className="column column-1-3">
+                                        <div class="subHeaderContainer">
+                                            <div class="subHeader">
+                                                <h3>{t('bitboxBase.settings.system.title')}</h3>
+                                            </div>
+                                        </div>
+                                        <div className="box slim divide">
+                                            <SettingsButton>{t('bitboxBase.settings.system.update')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.system.restart')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.system.shutdown')}</SettingsButton>
                                         </div>
                                     </div>
                                     <div className="column column-1-3">
@@ -164,32 +196,6 @@ class BaseSettings extends Component<Props, State> {
                                         <div className="box slim divide">
                                             <SettingsButton>{t('bitboxBase.settings.backups.create')}</SettingsButton>
                                             <SettingsButton>{t('bitboxBase.settings.backups.restore')}</SettingsButton>
-                                            <SettingsButton>{t('bitboxBase.settings.backups.manage')}</SettingsButton>
-                                        </div>
-                                    </div>
-                                    <div className="column column-1-3">
-                                        <div class="subHeaderContainer">
-                                            <div class="subHeader">
-                                                <h3>{t('bitboxBase.settings.node.title')}</h3>
-                                            </div>
-                                        </div>
-                                        <div className="box slim divide">
-                                            <SettingsButton>{t('bitboxBase.settings.node.update')}</SettingsButton>
-                                            <SettingsButton onClick={disconnect}>{t('bitboxBase.settings.node.disconnect')}</SettingsButton>
-                                            <SettingsButton>{t('bitboxBase.settings.node.restart')}</SettingsButton>
-                                            <SettingsButton>{t('bitboxBase.settings.node.shutdown')}</SettingsButton>
-                                        </div>
-                                    </div>
-                                    <div className="column column-1-3">
-                                        <div class="subHeaderContainer">
-                                            <div class="subHeader">
-                                                <h3>{t('bitboxBase.settings.networking.title')}</h3>
-                                            </div>
-                                        </div>
-                                        <div className="box slim divide">
-                                            <SettingsItem optionalText={baseID}>{t('bitboxBase.settings.networking.ipAddress')}</SettingsItem>
-                                            <SettingsButton optionalText="Enabled">{t('bitboxBase.settings.networking.tor')}</SettingsButton>
-                                            <SettingsButton optionalText="Allowed">{t('bitboxBase.settings.networking.incomingConnections')}</SettingsButton>
                                         </div>
                                     </div>
                                     <div className="column column-1-3">
@@ -199,32 +205,15 @@ class BaseSettings extends Component<Props, State> {
                                             </div>
                                         </div>
                                         <div className="box slim divide">
-                                            <SettingsButton optionalText="Enabled">{t('bitboxBase.settings.advanced.rootAccess')}</SettingsButton>
                                             <SettingsButton optionalText="Disabled">{t('bitboxBase.settings.advanced.sshAccess')}</SettingsButton>
                                             <SettingsButton onClick={connectElectrum}>{t('bitboxBase.settings.advanced.connectElectrum')}</SettingsButton>
                                             <SettingsButton>{t('bitboxBase.settings.advanced.syncOptions')}</SettingsButton>
+                                            <SettingsButton>{t('bitboxBase.settings.advanced.manual')}</SettingsButton>
                                             <SettingsButton danger>{t('bitboxBase.settings.advanced.reset')}</SettingsButton>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {/* <div class="row">
-                                <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
-                                    <ul>
-                                        <li>Block Number: {middlewareInfo.blocks}</li>
-                                        <li>Difficulty: {middlewareInfo.difficulty}</li>
-                                        <li>BitBox Base ID: {baseID}</li>
-                                        <li>Lightning Alias: {middlewareInfo.lightningAlias}</li>
-                                    </ul>
-                                </div>
-                                <div class="flex flex-1 flex-row flex-between flex-items-center spaced">
-                                    <ul>
-                                        <li>Blocks: {verificationProgress.blocks}</li>
-                                        <li>Headers: {verificationProgress.headers}</li>
-                                        <li>VerificationProgress: {verificationProgress.verificationProgress}</li>
-                                    </ul>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>

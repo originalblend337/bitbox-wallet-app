@@ -1,5 +1,4 @@
 .dashboardContainer {
-    background-image: linear-gradient(var(--color-lightblue), var(--color-blue));
     margin-top: 1px;
     position: relative;
 }
@@ -16,7 +15,7 @@
 }
 
 .expanded {
-    height: 576px;
+    height: 620px;
 }
 
 .expandButton {
@@ -109,6 +108,10 @@
 
 .expanded .expandedItemsContainer {
     transform: translateY(0%);
+}
+
+.lastSubheader {
+    margin: calc(var(--space-half) * 1.5) 0 !important;
 }
 
 .prosOptionsList {
